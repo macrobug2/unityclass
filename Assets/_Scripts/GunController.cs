@@ -21,6 +21,8 @@ public class GunController : MonoBehaviour
                 Mag--;
                 GameObject tempBullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
                 tempBullet.GetComponent<Rigidbody>().velocity = transform.forward * 10;
+                tempBullet.GetComponent<BulletController>().Owner = gameObject;
+                Destroy(tempBullet, 5);
                 Debug.Log("Mag: " + Mag);
             }
             else

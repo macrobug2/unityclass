@@ -25,9 +25,10 @@ public class PlayerController : MonoBehaviour {
     private Camera cam;
 
     public GunController Gun;
+    public HealthController Health;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
         //GunController = GetComponent<GunController>();
 
@@ -59,6 +60,11 @@ public class PlayerController : MonoBehaviour {
         {
             Gun.Fire();
         }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            Health.TakeDamage(10);
+        }
     }
 
     public void handleMovement()
@@ -87,10 +93,12 @@ public class PlayerController : MonoBehaviour {
     void Update ()
     {
         keyInput();
+    }
+
+    private void FixedUpdate()
+    {
         handleMovement();
         updateAnim();
         doMouseLook();
     }
-
-
 }
