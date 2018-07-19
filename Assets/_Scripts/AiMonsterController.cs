@@ -23,6 +23,7 @@ public class AiMonsterController : MonoBehaviour
         agent.stoppingDistance = 0;
 
         SetAttackCooldown = AttackCooldown;
+        agent.SetDestination(target.transform.position);
     }
 
     void Update()
