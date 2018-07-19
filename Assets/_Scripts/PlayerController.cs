@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour {
     private Camera cam;
 
     public GunController Gun;
-    public HealthController Health;
+    public HealthComponent Health;
 
     // Use this for initialization
     void Start ()

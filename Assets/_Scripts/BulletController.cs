@@ -13,7 +13,7 @@ public class BulletController : MonoBehaviour {
         if (other.gameObject != Owner)
         {
             Debug.Log("Hit! " + other.name);
-            other.GetComponent<HealthController>().TakeDamage(DamageAmount);
+            other.GetComponent<HealthComponent>().TakeDamage(DamageAmount);
             Destroy(gameObject);
         }
     }
