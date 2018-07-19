@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class AiMonsterController : MonoBehaviour
 {
     private NavMeshAgent agent;
-    private Rigidbody RB;
 
     public float MovementSpeed;
     public float AttackRadius;
@@ -18,12 +17,12 @@ public class AiMonsterController : MonoBehaviour
 
     void Start()
     {
-        RB = GetComponent<Rigidbody>();
-
         agent = GetComponent<NavMeshAgent>();
         agent.speed = MovementSpeed;
         agent.acceleration = MovementSpeed * 2;
         agent.stoppingDistance = 0;
+
+        SetAttackCooldown = AttackCooldown;
     }
 
     void Update()
@@ -37,17 +36,17 @@ public class AiMonsterController : MonoBehaviour
         if (agent.remainingDistance <= AttackRadius)
         {
             agent.isStopped = true;
-            Debug.Log("STOP!");
+            //Debug.Log("STOP!");
             if (SetAttackCooldown <= 0)
             {
-                Debug.Log("ATTACK!");
+                //Debug.Log("ATTACK!");
                 Anim.SetTrigger("Attack");
             }
         }
         else if (SetAttackCooldown <= 0)
         {
             agent.isStopped = false;
-            Debug.Log("WALK!");
+            //Debug.Log("WALK!");
         }
         agent.SetDestination(target.transform.position);
     }    
