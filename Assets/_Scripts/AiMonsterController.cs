@@ -7,17 +7,18 @@ public class AiMonsterController : MonoBehaviour
 {
     private NavMeshAgent agent;
     private Rigidbody RB;
-    private MeleeController melee;
 
     public float MovementSpeed;
     public float AttackRadius;
     public GameObject target;
     public Animator Anim;
 
+    public float AttackCooldown = .1f;
+    public float SetAttackCooldown;
+
     void Start()
     {
         RB = GetComponent<Rigidbody>();
-        melee = GetComponent<MeleeController>();
 
         agent = GetComponent<NavMeshAgent>();
         agent.speed = MovementSpeed;
@@ -28,23 +29,28 @@ public class AiMonsterController : MonoBehaviour
     void Update()
     {
         updateAnim();
-        updateDestination();
-        updateAttack();
-    }
 
-    public void updateDestination()
-    {
-        agent.SetDestination(target.transform.position);
-        agent.isStopped = agent.remainingDistance <= AttackRadius;
-    }
+        SetAttackCooldown -= Time.deltaTime;
 
-    public void updateAttack()
-    {
+        float distanceBetween = agent.remainingDistance;
+
         if (agent.remainingDistance <= AttackRadius)
         {
-            melee.Attack(Anim);
+            agent.isStopped = true;
+            Debug.Log("STOP!");
+            if (SetAttackCooldown <= 0)
+            {
+                Debug.Log("ATTACK!");
+                Anim.SetTrigger("Attack");
+            }
         }
-    }
+        else if (SetAttackCooldown <= 0)
+        {
+            agent.isStopped = false;
+            Debug.Log("WALK!");
+        }
+        agent.SetDestination(target.transform.position);
+    }    
 
     public void updateAnim()
     {

@@ -8,5 +8,8 @@ public class AiAnimationManager : MonoBehaviour
 
     public void StartAttack() { }
     public void EndDamage() { }
-    public void EndAttack() { }
+    public void EndAttack()
+    {
+        Controller.SetAttackCooldown = Controller.AttackCooldown;
+    }
 }
