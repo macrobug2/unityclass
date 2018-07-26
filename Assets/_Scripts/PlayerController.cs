@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour {
 
@@ -27,12 +28,19 @@ public class PlayerController : MonoBehaviour {
     public GunController Gun;
     public HealthComponent Health;
 
+    private NavMeshAgent agent;
+
     // Use this for initialization
     void Start ()
     {
         //GunController = GetComponent<GunController>();
 
         RB = GetComponent<Rigidbody>();
+        agent = GetComponent<NavMeshAgent>();
+        agent.speed = MaxSprintSpeed;
+        agent.acceleration = SprintAcclerationSpeed;
+        agent.stoppingDistance = 0;
+
         cam = GameObject.FindObjectOfType<Camera>();
         if (cam == null)
         {
@@ -42,7 +50,7 @@ public class PlayerController : MonoBehaviour {
 
     public void updateAnim()
     {
-        Vector3 localVel = transform.InverseTransformDirection(RB.velocity);
+        Vector3 localVel = transform.InverseTransformDirection(agent.velocity);
 
         Anim.SetFloat("ForwardSpeed", localVel.z);
         Anim.SetFloat("RightSpeed", localVel.x);
@@ -58,12 +66,19 @@ public class PlayerController : MonoBehaviour {
 
         if (Input.GetMouseButton(0))
         {
-            Gun.Fire();
-        }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            Health.TakeDamage(10);
+            RaycastHit hit;
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, 10000))
+            {
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    Gun.Fire();
+                }
+                else
+                {
+                    agent.SetDestination(hit.point);
+                }
+            }
         }
     }
 
@@ -97,8 +112,8 @@ public class PlayerController : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        handleMovement();
+        //handleMovement();
         updateAnim();
-        doMouseLook();
+        //doMouseLook();
     }
 }
