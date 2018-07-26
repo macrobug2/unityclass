@@ -1277,7 +1277,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1389486436}
   m_LocalRotation: {x: 0.30695271, y: -0.007710606, z: 0.002488479, w: 0.9516903}
-  m_LocalPosition: {x: -16.225258, y: 2.494212, z: -3.776544}
+  m_LocalPosition: {x: -16.195026, y: 3.8375525, z: -5.6421394}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1295,7 +1295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FocusPoint: {fileID: 1841721952}
-  InterpSpeed: 1
+  InterpSpeed: 5
 --- !u!1001 &1418572675
 Prefab:
   m_ObjectHideFlags: 0
