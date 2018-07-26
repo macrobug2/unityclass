@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour {
         IP.x = Input.GetAxisRaw("Horizontal");
         IP.z = Input.GetAxisRaw("Vertical");
 
-        SetMaxSpeed = (Input.GetButton("Sprint")) ? MaxSprintSpeed : MaxWalkSpeed;
+        SetMaxSpeed = (Input.GetButton("Sprint")) ? MaxWalkSpeed : MaxSprintSpeed;
         SetAccelerationSpeed = (Input.GetButton("Sprint")) ? SprintAcclerationSpeed : WalkAcclerationSpeed;
 
         if (Input.GetMouseButton(0))
