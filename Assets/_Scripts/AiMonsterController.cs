@@ -18,6 +18,8 @@ public class AiMonsterController : MonoBehaviour
 
     public Animator Anim;
 
+    public GameObject SelectedGround;
+
 	// Use this for initialization
 	void Start () {
         RB = GetComponent<Rigidbody>();
@@ -35,9 +37,7 @@ public class AiMonsterController : MonoBehaviour
     public void updateAnim()
     {
         Vector3 localVel = transform.InverseTransformDirection(agent.velocity);
-
         Anim.SetFloat("ForwardSpeed", localVel.z);
-
     }
 
     // Update is called once per frame

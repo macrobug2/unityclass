@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
     private Rigidbody RB;
 
@@ -31,14 +32,12 @@ public class PlayerController : MonoBehaviour {
     private NavMeshAgent agent;
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         //GunController = GetComponent<GunController>();
 
         RB = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
-        agent.speed = MaxSprintSpeed;
-        agent.acceleration = SprintAcclerationSpeed;
         agent.stoppingDistance = 0;
 
         cam = GameObject.FindObjectOfType<Camera>();
@@ -46,23 +45,32 @@ public class PlayerController : MonoBehaviour {
         {
             Debug.Log("NO CAMERA");
         }
-	}
+    }
 
     public void updateAnim()
     {
-        Vector3 localVel = transform.InverseTransformDirection(agent.velocity);
+        //Vector3 localVel = transform.InverseTransformDirection(agent.velocity);
 
-        Anim.SetFloat("ForwardSpeed", localVel.z);
-        Anim.SetFloat("RightSpeed", localVel.x);
+        //Anim.SetFloat("Blend", localVel.z);
+        //Anim.SetFloat("HorizontalSpeed", localVel.x);
+
+        float velocity = agent.velocity.magnitude / MaxSprintSpeed;
+        Debug.Log(velocity);
+        Anim.SetFloat("Blend", velocity);
     }
+
+    // vel / maxspeed
 
     public void keyInput()
     {
-        IP.x = Input.GetAxisRaw("Horizontal");
-        IP.z = Input.GetAxisRaw("Vertical");
+        //IP.x = Input.GetAxisRaw("Horizontal");
+        //IP.z = Input.GetAxisRaw("Vertical");
 
-        SetMaxSpeed = (Input.GetButton("Sprint")) ? MaxWalkSpeed : MaxSprintSpeed;
+        SetMaxSpeed = (Input.GetButton("Sprint")) ? MaxSprintSpeed : MaxWalkSpeed;
+        agent.speed = SetMaxSpeed;
+
         SetAccelerationSpeed = (Input.GetButton("Sprint")) ? SprintAcclerationSpeed : WalkAcclerationSpeed;
+        agent.acceleration = SetAccelerationSpeed;
 
         if (Input.GetMouseButton(0))
         {
@@ -72,25 +80,22 @@ public class PlayerController : MonoBehaviour {
             {
                 if (hit.collider.CompareTag("Enemy"))
                 {
-                    Gun.Fire();
+                    hit.collider.gameObject.GetComponent<AiMonsterController>().SelectedGround.SetActive(true);
                 }
-                else
-                {
-                    agent.SetDestination(hit.point);
-                }
+                agent.SetDestination(hit.point);
             }
         }
     }
 
-    public void handleMovement()
-    {
-      
-        RB.AddForce(IP * Time.deltaTime * SetAccelerationSpeed);
-        
-        RB.velocity = new Vector3(Mathf.Clamp(RB.velocity.x, -SetMaxSpeed, SetMaxSpeed),
-                                  RB.velocity.y,
-                                  Mathf.Clamp(RB.velocity.z, -SetMaxSpeed, SetMaxSpeed));
-    }
+    //public void handleMovement()
+    //{
+
+    //    RB.AddForce(IP * Time.deltaTime * SetAccelerationSpeed);
+
+    //    RB.velocity = new Vector3(Mathf.Clamp(RB.velocity.x, -SetMaxSpeed, SetMaxSpeed),
+    //                              RB.velocity.y,
+    //                              Mathf.Clamp(RB.velocity.z, -SetMaxSpeed, SetMaxSpeed));
+    //}
 
     public void doMouseLook()
     {
@@ -105,7 +110,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update ()
+    void Update()
     {
         keyInput();
     }
@@ -114,6 +119,6 @@ public class PlayerController : MonoBehaviour {
     {
         //handleMovement();
         updateAnim();
-        //doMouseLook();
+        doMouseLook();
     }
 }
